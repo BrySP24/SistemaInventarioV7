@@ -12,7 +12,7 @@ using SistemaInventario.AccesoDatos.Data;
 namespace SistemaInventario.AccesoDatos.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240616184653_AgregarBodegaMigracion")]
+    [Migration("20240617022323_AgregarBodegaMigracion")]
     partial class AgregarBodegaMigracion
     {
         /// <inheritdoc />
@@ -235,16 +235,18 @@ namespace SistemaInventario.AccesoDatos.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int>("Descripcion")
+                    b.Property<string>("Descripcion")
+                        .IsRequired()
                         .HasMaxLength(60)
-                        .HasColumnType("int");
+                        .HasColumnType("nvarchar(60)");
 
-                    b.Property<int>("Estado")
-                        .HasColumnType("int");
+                    b.Property<bool>("Estado")
+                        .HasColumnType("bit");
 
-                    b.Property<int>("Nombre")
+                    b.Property<string>("Nombre")
+                        .IsRequired()
                         .HasMaxLength(60)
-                        .HasColumnType("int");
+                        .HasColumnType("nvarchar(60)");
 
                     b.HasKey("Id");
 

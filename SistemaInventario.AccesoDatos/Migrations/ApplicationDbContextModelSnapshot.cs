@@ -232,16 +232,18 @@ namespace SistemaInventario.AccesoDatos.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int>("Descripcion")
+                    b.Property<string>("Descripcion")
+                        .IsRequired()
                         .HasMaxLength(60)
-                        .HasColumnType("int");
+                        .HasColumnType("nvarchar(60)");
 
-                    b.Property<int>("Estado")
-                        .HasColumnType("int");
+                    b.Property<bool>("Estado")
+                        .HasColumnType("bit");
 
-                    b.Property<int>("Nombre")
+                    b.Property<string>("Nombre")
+                        .IsRequired()
                         .HasMaxLength(60)
-                        .HasColumnType("int");
+                        .HasColumnType("nvarchar(60)");
 
                     b.HasKey("Id");
 

@@ -17,7 +17,7 @@ builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.Requ
     .AddEntityFrameworkStores<ApplicationDbContext>();
 //Agregar al final .AddRazorRuntimeCompilation()
 builder.Services.AddControllersWithViews().AddRazorRuntimeCompilation();
-
+//Agregar AddScoped<IUnidadTrabajo, UnidadTrabajo>();
 builder.Services.AddScoped<IUnidadTrabajo, UnidadTrabajo>();
 
 var app = builder.Build();

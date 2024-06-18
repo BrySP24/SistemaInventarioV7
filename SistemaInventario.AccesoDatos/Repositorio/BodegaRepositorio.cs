@@ -12,6 +12,7 @@ namespace SistemaInventario.AccesoDatos.Repositorio
     public class BodegaRepositorio : Repositorio<Bodega>, IBodegaRepositorio
     {
         private readonly ApplicationDbContext _db;
+
         public BodegaRepositorio(ApplicationDbContext db) : base(db)
         {
             _db = db;

@@ -1,4 +1,8 @@
-﻿<!DOCTYPE html>
+﻿﻿@using SistemaInventario.Utilidades
+@using Microsoft.AspNetCore.Http
+@inject IHttpContextAccessor httpContextAccessor
+
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
@@ -7,6 +11,17 @@
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/SistemaInventario_7.styles.css" asp-append-version="true" />
+    @*Aqui se agregan las referencia de las herramientas de terceros con formato css*@
+
+    @*Librería para el despliegue de información "datatables" *@
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.3/css/jquery.dataTables.min.css" />
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.3/css/jquery.dataTables.min.css" />
+    @*Librería para el despliegue de notificaciones  "Toastr" *@
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" />
+    @*Librería para el despliegue de iconos y mas   "bootstrap" *@
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css">
+
+
 </head>
 <body>
     <header>
@@ -42,6 +57,8 @@
     </header>
     <div class="container">
         <main role="main" class="pb-3">
+            @*Aqui se invoca la vista pacial _Notificaciones *@
+            <partial name="_Notificaciones" />
             @RenderBody()
         </main>
     </div>
@@ -54,6 +71,16 @@
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
+    @*Aqui se agregan las referencia de las herramientas de terceros con formato JS*@
+
+    @*Librería para el despliegue de información "datatables" *@
+    <script src="https://cdn.datatables.net/1.13.3/js/jquery.dataTables.min.js"></script>
+    @*Librería para el despliegue de alertas  "SweetAlert" *@
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+    @*Librería para el despliegue de notificaciones  "Toastr"*@
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+
+
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>
