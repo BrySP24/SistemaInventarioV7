@@ -21,7 +21,7 @@ function loadDataTable() {
             }
         },
         "ajax": {
-            "url": "/Admin/Bodega/ObtenerTodos"
+            "url": "/Admin/Categoria/ObtenerTodos"
         },
         "columns": [
             { "data": "nombre", "width": "20%" },
@@ -30,12 +30,11 @@ function loadDataTable() {
                 "data": "estado",
                 "render": function (data) {
                     if (data == true) {
-                        return "Activo"
+                        return "Activo";
                     }
                     else {
-                        return "Inactivo"
+                        return "Inactivo";
                     }
-
                 }, "width": "20%"
             },
             {
@@ -43,12 +42,12 @@ function loadDataTable() {
                 "render": function (data) {
                     return `
                         <div class="text-center">
-                            <a href="/Admin/Bodega/Upsert/${data}" class="btn btn-success text-white" style="cursor:pointer">
-                            <i class="bi bi-pencil-square"></i>
-                            </a>
-                            <a onclick=Delete("/Admin/Bodega/Delete/${data}") class="btn btn-danger text-white" style="cursor:pointer">
-                            <i class="bi bi-trash3-fill"></i>
-                            </a>
+                           <a href="/Admin/Categoria/Upsert/${data}" class="btn btn-success text-white" style="cursor:pointer">
+                              <i class="bi bi-pencil-square"></i>  
+                           </a>
+                           <a onclick=Delete("/Admin/Categoria/Delete/${data}") class="btn btn-danger text-white" style="cursor:pointer">
+                                <i class="bi bi-trash3-fill"></i>
+                           </a> 
                         </div>
                     `;
                 }, "width": "20%"
@@ -61,7 +60,7 @@ function loadDataTable() {
 function Delete(url) {
 
     swal({
-        title: "Este seguro de elimimar la bodega?",
+        title: "Este seguro de elimimar la categoria?",
         text: "Este registro no se podra recuperar",
         icon: "warning",
         buttons: true,
