@@ -17,7 +17,9 @@ namespace SistemaInventario.AccesoDatos.Data
         public DbSet<Categoria> Categorias { get; set; }
 
         public DbSet<Marca> Marcas { get; set; }
-        public object Marca { get; internal set; }
+
+        public DbSet<Producto> Productos { get; set; }
+
 
 
         //Implementar FLUENT API

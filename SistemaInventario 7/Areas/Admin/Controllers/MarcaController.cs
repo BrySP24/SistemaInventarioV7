@@ -7,11 +7,11 @@ using SistemaInventario.Utilidades;
 namespace SistemaInventario_7.Areas.Admin.Controllers
 {
     [Area("Admin")]
-    public class CategoriaController : Controller
+    public class MarcaController : Controller
     {
         private readonly IUnidadTrabajo _unidadTrabajo;
 
-        public CategoriaController(IUnidadTrabajo unidadTrabajo)
+        public MarcaController(IUnidadTrabajo unidadTrabajo)
         {
             _unidadTrabajo = unidadTrabajo;
         }
@@ -23,44 +23,44 @@ namespace SistemaInventario_7.Areas.Admin.Controllers
 
         public async Task<IActionResult> Upsert(int? id)
         {
-            Categoria categoria = new Categoria();
+            Marca marca = new Marca();
 
             if (id == null)
             {
-                //Crear una nueva categoria 
-                categoria.Estado = true;
-                return View(categoria);
+                //Crear una nueva marca 
+                marca.Estado = true;
+                return View(marca);
             }
             //Actualizamos categoria
-            categoria = await _unidadTrabajo.Categoria.Obtener(id.GetValueOrDefault());
-            if (categoria == null) 
+            marca = await _unidadTrabajo.Marca.Obtener(id.GetValueOrDefault());
+            if (marca == null) 
             {
                 return NotFound();
             }
-            return View(categoria);
+            return View(marca);
         }
-        // Metodo de Crea y Actualizar categoria
+        // Metodo de Crea y Actualizar marca
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Upsert(Categoria categoria) 
+        public async Task<IActionResult> Upsert(Marca marca) 
         {
             if(ModelState.IsValid)
             {
-                if (categoria.Id == 0)
+                if (marca.Id == 0)
                 {
-                    await _unidadTrabajo.Categoria.Agregar(categoria);
-                    TempData[DS.Exitosa] = "Categoria creada exitosamente!";
+                    await _unidadTrabajo.Marca.Agregar(marca);
+                    TempData[DS.Exitosa] = "Marca creada exitosamente!";
                 }
                 else
                 {
-                    _unidadTrabajo.Categoria.Actualizar(categoria);
-                    TempData[DS.Exitosa] = "Categoria actualizada exitosamente!";
+                    _unidadTrabajo.Marca.Actualizar(marca);
+                    TempData[DS.Exitosa] = "Marca actualizada exitosamente!";
                 }
                 await _unidadTrabajo.Guardar();
                 return RedirectToAction(nameof(Index));
             }
             TempData[DS.Error] = "Error a guardar categoria!";
-            return View(categoria);
+            return View(marca);
         }
 
         #region API 
@@ -68,7 +68,7 @@ namespace SistemaInventario_7.Areas.Admin.Controllers
         [HttpGet]
         public async Task<IActionResult> ObtenerTodos() 
         {
-            var todos = await _unidadTrabajo.Categoria.ObtenerTodos();
+            var todos = await _unidadTrabajo.Marca.ObtenerTodos();
             return Json(new { data = todos });
         }
 
@@ -76,21 +76,21 @@ namespace SistemaInventario_7.Areas.Admin.Controllers
         [HttpPost]
         public async Task<IActionResult> Delete(int id)
         {
-            var categoriaDb = await _unidadTrabajo.Categoria.Obtener(id);
-            if (categoriaDb == null)
+            var marcaDb = await _unidadTrabajo.Marca.Obtener(id);
+            if (marcaDb == null)
             {
-                return Json(new { success = false, message = "Error al borrar categoria" });
+                return Json(new { success = false, message = "Error al borrar marca" });
             }
-            _unidadTrabajo.Categoria.Remover(categoriaDb);
+            _unidadTrabajo.Marca.Remover(marcaDb);
             await _unidadTrabajo.Guardar();
-            return Json(new { success = true, message = "Categoria borrada exitosamente" });
+            return Json(new { success = true, message = "Marca borrada exitosamente" });
         }
 
         [ActionName("ValidarNombre")]
         public async Task<IActionResult> ValidarNombre(string nombre, int id = 0)
         {
             bool valor = false;
-            var lista = await _unidadTrabajo.Categoria.ObtenerTodos();
+            var lista = await _unidadTrabajo.Marca.ObtenerTodos();
             if (id == 0)
             {
                 valor = lista.Any(b => b.Nombre.ToLower().Trim() == nombre.ToLower().Trim());
