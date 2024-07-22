@@ -20,6 +20,8 @@ namespace SistemaInventario.AccesoDatos.Data
 
         public DbSet<Producto> Productos { get; set; }
 
+        public DbSet<UsuarioAplicacion> UsuarioAplicacion { get; set; }
+
 
 
         //Implementar FLUENT API
