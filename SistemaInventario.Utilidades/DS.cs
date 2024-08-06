@@ -6,12 +6,16 @@ using System.Threading.Tasks;
 
 namespace SistemaInventario.Utilidades
 {
-    public static class DS
+    // clase de definiciones estaticas 
+    public static class DS 
     {
         public const string Exitosa = "Exitosa";
+
         public const string Error = "Error";
 
         public const string ImagenRuta = @"\imagenes\producto\";
+
+        //Tipos de roles
 
         public const string Role_Admin = "Admin";
 

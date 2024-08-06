@@ -132,15 +132,18 @@ namespace SistemaInventario_7.Areas.Identity.Pages.Account
             ReturnUrl = returnUrl;
             Input = new InputModel()
             {
-                ListaRol = _roleManager.Roles.Where(r => r.Name!= DS.Role_Cliente).Select(n => n.Name).Select(l => new SelectListItem 
+                ListaRol = _roleManager.Roles.Where(r => r.Name!= DS.Role_Cliente).Select(n => n.Name).Select( l => new SelectListItem 
                 {
                     Text = l,
                     Value = l
                 })
 
             };
+
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
         }
+
+        // Se encarga de registrar un nuevo usuario
 
         public async Task<IActionResult> OnPostAsync(string returnUrl = null)
         {
@@ -154,7 +157,7 @@ namespace SistemaInventario_7.Areas.Identity.Pages.Account
                 {
                     UserName = Input.Email,
                     Email = Input.Email,
-                    PhoneNumber =   Input.PhoneNumber,
+                    PhoneNumber = Input.PhoneNumber,
                     Nombres = Input.Nombres,
                     Apellidos = Input.Apellidos,
                     Direccion = Input.Direccion,
@@ -170,7 +173,7 @@ namespace SistemaInventario_7.Areas.Identity.Pages.Account
 
                 if (result.Succeeded)
                 {
-                    _logger.LogInformation("User created a new account with password.");
+                    _logger.LogInformation("El usuario creó una nueva cuenta con contraseña.");
 
                     if (!await _roleManager.RoleExistsAsync(DS.Role_Admin)) 
                     {
@@ -187,10 +190,22 @@ namespace SistemaInventario_7.Areas.Identity.Pages.Account
                         await _roleManager.CreateAsync(new IdentityRole(DS.Role_Inventario));
                     }
 
-                    await _userManager.AddToRoleAsync(user,DS.Role_Admin);
+                    //await _userManager.AddToRoleAsync(user,DS.Role_Admin);
+
+                    if (user.Role == null) // El valor que se recibe desde el Pege                    
+                    {
+                        await _userManager.AddToRoleAsync(user, DS.Role_Cliente);
+                    }
+                    else
+                    {
+                        await _userManager.AddToRoleAsync(user, user.Role);
+                    }  
+
 
 
                     var userId = await _userManager.GetUserIdAsync(user);
+
+
                     //var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
                     //code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
                     //var callbackUrl = Url.Page(
@@ -208,10 +223,28 @@ namespace SistemaInventario_7.Areas.Identity.Pages.Account
                     }
                     else
                     {
-                        await _signInManager.SignInAsync(user, isPersistent: false);
-                        return LocalRedirect(returnUrl);
+                        if (user.Role == null)
+                        {
+                            await _signInManager.SignInAsync(user, isPersistent: false);
+                            return LocalRedirect(returnUrl);
+                        }
+                        else 
+                        {
+                            // Administradoir esta registrando a un nuevo usuario 
+                            return RedirectToAction("Index", "Usuario", new {Area= "Admin"});
+                        }
                     }
                 }
+                Input = new InputModel()
+                {
+                    ListaRol = _roleManager.Roles.Where(r => r.Name != DS.Role_Cliente).Select(n => n.Name).Select(l => new SelectListItem
+                    {
+                        Text = l,
+                        Value = l
+                    })
+
+                };
+
                 foreach (var error in result.Errors)
                 {
                     ModelState.AddModelError(string.Empty, error.Description);

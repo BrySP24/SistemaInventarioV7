@@ -15,9 +15,30 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(connectionString));
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
-builder.Services.AddIdentity<IdentityUser,IdentityRole>(options => options.SignIn.RequireConfirmedAccount = false)
+builder.Services.AddIdentity<IdentityUser,IdentityRole>(options => options.SignIn.RequireConfirmedAccount = true)
+    .AddErrorDescriber<ErrorDescriber>()
     .AddDefaultTokenProviders()
     .AddEntityFrameworkStores<ApplicationDbContext>();
+
+builder.Services.ConfigureApplicationCookie(options =>
+{
+    options.LoginPath = $"/Identity/Account/Login";
+    options.LogoutPath = $"/Identity/Account/Logout";
+    options.AccessDeniedPath = $"/Identity/Account/AccessDenied";
+});
+// Agregar servicio de congiguracion de reglas de contrasena
+
+builder.Services.Configure<IdentityOptions>(options =>
+{
+    options.Password.RequireDigit = false;      // no contiene numeros 
+    options.Password.RequireLowercase = true;   // por lo menos una letra minuscula
+    options.Password.RequireNonAlphanumeric = false;  // no caracteres especiales
+    options.Password.RequireUppercase = false;  // sin letras mayusculas
+    options.Password.RequiredLength = 6;  // con minimo 6 caracteres 
+    options.Password.RequiredUniqueChars = 1;  // permite que se repita una vez un caracater
+
+});
+
 //Agregar al final .AddRazorRuntimeCompilation()
 builder.Services.AddControllersWithViews().AddRazorRuntimeCompilation();
 //Agregar AddScoped<IUnidadTrabajo, UnidadTrabajo>();
@@ -46,6 +67,7 @@ app.UseStaticFiles();
 
 app.UseRouting();
 
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllerRoute(
